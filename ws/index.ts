@@ -23,6 +23,7 @@ interface socketListType {
 
 server.on("upgrade", (req:IncomingMessage, socket:Socket, head:Buffer) => {
     try {
+        console.log("upgrade server");
         if(req.headers.origin !== "http://localhost:3000" || !req.headers.cookie) {
             throw new Error("Cors error or cookie is missing");
         }
@@ -69,7 +70,15 @@ ws.on("connection", (socket:CustomWebsocket) => {
                 const senderSocket = socketList[socketId];
                 const receiverSocket = socketList[receiverEmail];
                 const obj = {text,senderId,receiverId,senderEmail};
-                saveMessageToDB(obj,socket.accessToken);
+                // save mssg to DB
+                saveMessageToDB(obj,socket.accessToken).catch(err => {
+                    console.log("Error for saveMessageToDB()");
+                    socket.close();
+                    if(socket.id && socketList[socket.id]){
+                        delete socketList[socket.id];
+                    }
+                });
+
                 if(senderSocket && senderSocket.readyState === WebSocket.OPEN) {
                     senderSocket.send(JSON.stringify({ type: "text-message",...obj}));
                 }
@@ -78,10 +87,12 @@ ws.on("connection", (socket:CustomWebsocket) => {
                 }
             }
         } catch (error) {
+            console.log("caught savedb error")
             console.log(error);
         }
     })
     socket.on("close", async() => {
+        console.log("socket closed")
         if(socket.id && socketList[socket.id]){
             delete socketList[socket.id];
         }

@@ -56,6 +56,7 @@ const server = http_1.default.createServer();
 const socketList = {};
 server.on("upgrade", (req, socket, head) => {
     try {
+        console.log("upgrade server");
         if (req.headers.origin !== "http://localhost:3000" || !req.headers.cookie) {
             throw new Error("Cors error or cookie is missing");
         }
@@ -103,7 +104,14 @@ ws.on("connection", (socket) => {
                 const senderSocket = socketList[socketId];
                 const receiverSocket = socketList[receiverEmail];
                 const obj = { text, senderId, receiverId, senderEmail };
-                (0, db_1.saveMessageToDB)(obj, socket.accessToken);
+                // save mssg to DB
+                (0, db_1.saveMessageToDB)(obj, socket.accessToken).catch(err => {
+                    console.log("Error for saveMessageToDB()");
+                    socket.close();
+                    if (socket.id && socketList[socket.id]) {
+                        delete socketList[socket.id];
+                    }
+                });
                 if (senderSocket && senderSocket.readyState === ws_1.default.OPEN) {
                     senderSocket.send(JSON.stringify(Object.assign({ type: "text-message" }, obj)));
                 }
@@ -113,10 +121,12 @@ ws.on("connection", (socket) => {
             }
         }
         catch (error) {
+            console.log("caught savedb error");
             console.log(error);
         }
     }));
     socket.on("close", () => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("socket closed");
         if (socket.id && socketList[socket.id]) {
             delete socketList[socket.id];
         }
