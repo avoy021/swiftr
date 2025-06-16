@@ -1,0 +1,185 @@
+"use client";
+import axiosInstance from "@/lib/axiosInterceptors";
+import { logoutUser, setChats, setToken } from "@/lib/features/user/userSlice";
+import { AppDispatch, RootState } from "@/lib/store";
+import { Send } from "lucide-react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Toast from "./Toast";
+import { useToast } from "@/hooks/useToast";
+import axios from "axios";
+
+interface ChatSectionProps {
+    activeChat: string
+}
+
+const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
+    const [text,setText] = useState("");
+    const [details,setDetails] = useState<{receiverName:string,receiverId:number,receiverEmail:string}>({receiverName:"", receiverId:0, receiverEmail:""});
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const messageEndRef = useRef<HTMLDivElement | null>(null);
+    const {username,contacts,userId,accessToken,isInitialized,chats,contactInfoByEmail,shouldConnectWs} = useSelector((state:RootState)=> state.user)
+    const socketRef = useRef<WebSocket | null>(null);
+    const dispatch = useDispatch<AppDispatch>();
+    const {toast,showToast,clearToast} = useToast();
+
+    useEffect(() => {
+        if(shouldConnectWs && (!isInitialized || !accessToken || socketRef.current)) return;
+        socketRef.current = new WebSocket("ws://localhost:8080");
+
+        socketRef.current.onopen = () => {
+            console.log('Connection opened');
+            socketRef.current?.send(JSON.stringify({message:"Connection opened"}));
+        }
+
+        socketRef.current.onerror = (err) => {
+            console.error(err);
+        }
+
+        socketRef.current.onclose = (event) => {
+            console.log("Socket closed");
+            // on socket.close i can use axiosInstance to get a new access token
+            if(!socketRef.current) return;
+            socketRef.current.onopen = null;
+            socketRef.current.onmessage = null;
+            socketRef.current.onerror = null;
+            socketRef.current.onclose = null;
+            socketRef.current = null;
+             // Reconnect logic (optional)
+            if (event.code !== 1000 && isInitialized && accessToken) {
+                // Reconnect after delay for unexpected closures
+                setTimeout(() => {
+                    // Trigger re-initialization by updating a state
+                }, 3000);
+            }
+        }
+
+        return () => {
+            if(socketRef.current?.readyState === WebSocket.OPEN) {
+                console.log('cleanup');
+                socketRef.current.onopen = null;
+                socketRef.current.onmessage = null;
+                socketRef.current.onerror = null;
+                socketRef.current.onclose = null;
+                socketRef.current.close();
+                socketRef.current = null;
+            }
+        }
+    },[isInitialized,shouldConnectWs]) //page reload,1st visit(isInitialize),login(accessToken) change=> new socket
+
+    useEffect(() => {
+        if(!socketRef.current) return;
+        socketRef.current.onmessage = async(event) => {
+            const payload = JSON.parse(event.data);
+            const {type} = payload;
+            console.log(payload);
+            if(type === "text-message") {
+                if(payload.senderEmail !== username && payload.senderEmail !== activeChat) {
+                    showToast(`${payload.senderEmail} sent you a message.`)
+                }
+                dispatch(setChats(payload));            
+            }
+            else if(type === "refresh-token") {
+                // call http endpoint
+                try {
+                    const response = await axios({
+                        method:"POST",
+                        url: "http://localhost:8000/api/user/refresh",
+                        withCredentials: true
+                    })
+                    const {accessToken} = response.data;
+                    dispatch(setToken(accessToken));
+                    socketRef.current?.send(JSON.stringify({
+                        type: "token-refreshed",
+                        token: accessToken
+                    }))
+                } catch (err) {
+                    console.log(err);
+                    // if token is not refreshed(not possible with current scenario as refreshToken is called 5 mins before expiry), only reason could be refresh token has expired
+                    dispatch(logoutUser()); 
+                }
+            }
+        }
+
+        return () => {
+            if(socketRef.current) {
+                socketRef.current.onmessage = null;
+            }
+        }
+    },[activeChat])
+
+    useEffect(() => {
+        console.log("token changed")
+    },[accessToken])
+
+    useEffect(() => {
+        if(activeChat && chats.length>0){
+            messageEndRef.current?.scrollIntoView({'behavior': 'instant'});
+        }
+    },[activeChat,chats.length])
+    
+    const sendMessage = () => {
+        if(!socketRef.current) {
+            console.log("Socket is closed");
+            return;
+        }
+        if(socketRef.current.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({
+                type:"text-message",
+                text,
+                senderId: userId,
+                senderEmail: username,
+                receiverEmail: activeChat,
+                ...contactInfoByEmail[activeChat]
+            }))
+        }
+        setText("");
+        inputRef.current?.focus();
+    }
+
+    return (
+        <main className="sticky top-0 flex-1 h-full flex flex-col px-12 py-6 bg-gray-100">
+            <div className="w-3/4 mx-auto mb-4">
+                <p className="text-2xl font-medium">{contactInfoByEmail[activeChat]?.receiverName}</p>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+                <div className="w-3/4 mx-auto flex flex-col">
+                        {
+                            activeChat && chats.length>0 ? chats.map((chat,index) => {
+                            if(chat.senderId===userId && chat.receiverId===contactInfoByEmail[activeChat].receiverId) {
+                                return <p
+                                    className="self-end max-w-[75%] px-4 py-2 my-1 text-white bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-md text-sm break-words"
+                                    key={index}
+                                    >
+                                    {chat.text}
+                                    </p>
+                            }
+                            else if(chat.receiverId===userId && chat.senderId===contactInfoByEmail[activeChat].receiverId) {
+                                return <p
+                                    className="self-start max-w-[75%] px-4 py-2 my-1 text-gray-800 bg-gray-200 rounded-2xl shadow-sm text-sm break-words"
+                                    key={index}
+                                    >
+                                    {chat.text}
+                                    </p>
+
+                            }
+                            }) : 
+                            null 
+                        }
+                </div>
+                <div ref={messageEndRef}/>
+            </div>
+            <div className="w-3/4 mx-auto mt-2 mb-1 flex items-center bg-gray-200 rounded-lg">
+                <input type="text" name="messageBar" id="messageBar" placeholder="Your message" className="w-11/12 py-4 px-4 outline-none text-sm font-medium" ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => {
+                    if(e.key === "Enter") {
+                        sendMessage();
+                    }
+                }}/>
+                <Send className="cursor-pointer" onClick={sendMessage}/>
+            </div>
+            {toast && <Toast message={toast} onClose={clearToast}/>}
+        </main>
+    )
+}
+
+export default ChatSection;
