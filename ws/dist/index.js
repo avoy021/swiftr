@@ -77,6 +77,8 @@ server.on("upgrade", (req, socket, head) => {
             }
             ws.handleUpgrade(req, socket, head, (wss) => {
                 const { email } = decoded;
+                const exp = decoded.exp;
+                console.log("jwt exp", exp);
                 wss.id = email;
                 wss.accessToken = token;
                 socketList[email] = wss;
@@ -101,21 +103,22 @@ ws.on("connection", (socket) => {
                 const { receiverEmail, text, senderId, receiverId, senderEmail } = data;
                 if (!socketId)
                     return;
-                const senderSocket = socketList[socketId];
                 const receiverSocket = socketList[receiverEmail];
                 const obj = { text, senderId, receiverId, senderEmail };
                 // save mssg to DB
                 (0, db_1.saveMessageToDB)(obj, socket.accessToken).catch(err => {
                     console.log("Error for saveMessageToDB()");
-                    socket.close();
-                    if (socket.id && socketList[socket.id]) {
-                        delete socketList[socket.id];
-                    }
+                    // socket.close();
+                    // if(socket.id && socketList[socket.id]){
+                    // delete socketList[socket.id];
+                    // }
                 });
-                if (senderSocket && senderSocket.readyState === ws_1.default.OPEN) {
-                    senderSocket.send(JSON.stringify(Object.assign({ type: "text-message" }, obj)));
+                if (socket && socket.readyState === ws_1.default.OPEN) {
+                    console.log("Sender");
+                    socket.send(JSON.stringify(Object.assign({ type: "text-message" }, obj)));
                 }
                 if (receiverSocket && receiverSocket.readyState === ws_1.default.OPEN) {
+                    console.log("receiver");
                     receiverSocket.send(JSON.stringify(Object.assign({ type: "text-message" }, obj)));
                 }
             }

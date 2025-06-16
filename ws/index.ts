@@ -7,19 +7,13 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { send } from "process";
 import { saveMessageToDB } from "./lib/db";
+import { CustomWebsocket } from "./lib/types";
+import { getExpiryInMinutes, refreshToken, waitForRefreshToComplete } from "./lib/auth";
 
 dotenv.config();
 const ws = new WebSocketServer({ noServer:true });
 const server = http.createServer();
 const socketList: Record<string,CustomWebsocket> = {};
-
-interface CustomWebsocket extends WebSocket {
-    id?: string;
-    accessToken?: string
-}
-interface socketListType {
-    [email:string]: CustomWebsocket;
-}
 
 server.on("upgrade", (req:IncomingMessage, socket:Socket, head:Buffer) => {
     try {
@@ -44,8 +38,12 @@ server.on("upgrade", (req:IncomingMessage, socket:Socket, head:Buffer) => {
             }
             ws.handleUpgrade(req,socket,head, (wss:CustomWebsocket) => {
                 const {email} = decoded;
+                const exp = decoded.exp; //in sec
                 wss.id = email;
                 wss.accessToken = token;
+                wss.expiresIn = exp;
+                wss.refreshInProgress = false;
+                wss.lastChecked = Date.now();
                 socketList[email] = wss;
                 ws.emit("connection",wss,req);
             })
@@ -58,36 +56,50 @@ server.on("upgrade", (req:IncomingMessage, socket:Socket, head:Buffer) => {
     }
 })
 
-ws.on("connection", (socket:CustomWebsocket) => {
+ws.on("connection", async (socket:CustomWebsocket) => {
     socket.on("error", console.error);
     socket.on("message", async(payload) => {
         try {
+            if(!socket.id || !socket.accessToken || !socket.expiresIn || !socket.lastChecked) return; //destroy socket
             const data = JSON.parse(payload.toString());
-            if(data.type === "text-message") {
-                const socketId = socket.id;
+            if(data.type === "token-refreshed") {
+                socket.emit("refreshedToken",data.token);
+                return;
+            }
+            if(socket.refreshInProgress) {
+                await waitForRefreshToComplete(socket);
+            }
+            if(!socket.refreshInProgress && getExpiryInMinutes(socket.accessToken)<5) {
+                socket.refreshInProgress = true;
+                socket.send(JSON.stringify({
+                    message: "refresh-token"
+                }))
+                const newToken = await refreshToken(socket);
+                socket.accessToken = newToken;
+                socket.refreshInProgress = false;
+            }
+            if(socket.accessToken && data.type === "text-message") {
                 const {receiverEmail,text,senderId,receiverId,senderEmail} = data;
-                if(!socketId) return;
-                const senderSocket = socketList[socketId];
                 const receiverSocket = socketList[receiverEmail];
                 const obj = {text,senderId,receiverId,senderEmail};
-                // save mssg to DB
                 saveMessageToDB(obj,socket.accessToken).catch(err => {
                     console.log("Error for saveMessageToDB()");
-                    socket.close();
-                    if(socket.id && socketList[socket.id]){
-                        delete socketList[socket.id];
-                    }
                 });
 
-                if(senderSocket && senderSocket.readyState === WebSocket.OPEN) {
-                    senderSocket.send(JSON.stringify({ type: "text-message",...obj}));
+                if(socket && socket.readyState === WebSocket.OPEN) {
+                    console.log("Sender")
+                    socket.send(JSON.stringify({ type: "text-message",...obj}));
                 }
                 if(receiverSocket && receiverSocket.readyState === WebSocket.OPEN) {
+                    console.log("receiver")
                     receiverSocket.send(JSON.stringify({type: "text-message",...obj}));
                 }
             }
         } catch (error) {
-            console.log("caught savedb error")
+            if(error === "Token refresh failed") {
+                socket.close();
+                return;
+            }
             console.log(error);
         }
     })
@@ -98,5 +110,6 @@ ws.on("connection", (socket:CustomWebsocket) => {
         }
     })
 })
+
 
 server.listen(8080);
