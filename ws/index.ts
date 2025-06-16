@@ -63,18 +63,20 @@ ws.on("connection", async (socket:CustomWebsocket) => {
             if(!socket.id || !socket.accessToken || !socket.expiresIn || !socket.lastChecked) return; //destroy socket
             const data = JSON.parse(payload.toString());
             if(data.type === "token-refreshed") {
+                console.log("Emit: ",data);
                 socket.emit("refreshedToken",data.token);
                 return;
             }
             if(socket.refreshInProgress) {
                 await waitForRefreshToComplete(socket);
             }
-            if(!socket.refreshInProgress && getExpiryInMinutes(socket.accessToken)<5) {
+            if(!socket.refreshInProgress && getExpiryInMinutes(socket.accessToken)<2) {
                 socket.refreshInProgress = true;
                 socket.send(JSON.stringify({
-                    message: "refresh-token"
+                    type: "refresh-token"
                 }))
                 const newToken = await refreshToken(socket);
+                console.log("New token",newToken)
                 socket.accessToken = newToken;
                 socket.refreshInProgress = false;
             }
@@ -96,11 +98,11 @@ ws.on("connection", async (socket:CustomWebsocket) => {
                 }
             }
         } catch (error) {
+            console.log(error);
             if(error === "Token refresh failed") {
                 socket.close();
                 return;
             }
-            console.log(error);
         }
     })
     socket.on("close", async() => {

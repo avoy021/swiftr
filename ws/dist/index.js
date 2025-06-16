@@ -50,6 +50,7 @@ const http_1 = __importDefault(require("http"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const db_1 = require("./lib/db");
+const auth_1 = require("./lib/auth");
 dotenv_1.default.config();
 const ws = new ws_1.WebSocketServer({ noServer: true });
 const server = http_1.default.createServer();
@@ -77,10 +78,12 @@ server.on("upgrade", (req, socket, head) => {
             }
             ws.handleUpgrade(req, socket, head, (wss) => {
                 const { email } = decoded;
-                const exp = decoded.exp;
-                console.log("jwt exp", exp);
+                const exp = decoded.exp; //in sec
                 wss.id = email;
                 wss.accessToken = token;
+                wss.expiresIn = exp;
+                wss.refreshInProgress = false;
+                wss.lastChecked = Date.now();
                 socketList[email] = wss;
                 ws.emit("connection", wss, req);
             });
@@ -93,25 +96,37 @@ server.on("upgrade", (req, socket, head) => {
         return;
     }
 });
-ws.on("connection", (socket) => {
+ws.on("connection", (socket) => __awaiter(void 0, void 0, void 0, function* () {
     socket.on("error", console.error);
     socket.on("message", (payload) => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            if (!socket.id || !socket.accessToken || !socket.expiresIn || !socket.lastChecked)
+                return; //destroy socket
             const data = JSON.parse(payload.toString());
-            if (data.type === "text-message") {
-                const socketId = socket.id;
+            if (data.type === "token-refreshed") {
+                console.log("Emit: ", data);
+                socket.emit("refreshedToken", data.token);
+                return;
+            }
+            if (socket.refreshInProgress) {
+                yield (0, auth_1.waitForRefreshToComplete)(socket);
+            }
+            if (!socket.refreshInProgress && (0, auth_1.getExpiryInMinutes)(socket.accessToken) < 2) {
+                socket.refreshInProgress = true;
+                socket.send(JSON.stringify({
+                    type: "refresh-token"
+                }));
+                const newToken = yield (0, auth_1.refreshToken)(socket);
+                console.log("New token", newToken);
+                socket.accessToken = newToken;
+                socket.refreshInProgress = false;
+            }
+            if (socket.accessToken && data.type === "text-message") {
                 const { receiverEmail, text, senderId, receiverId, senderEmail } = data;
-                if (!socketId)
-                    return;
                 const receiverSocket = socketList[receiverEmail];
                 const obj = { text, senderId, receiverId, senderEmail };
-                // save mssg to DB
                 (0, db_1.saveMessageToDB)(obj, socket.accessToken).catch(err => {
                     console.log("Error for saveMessageToDB()");
-                    // socket.close();
-                    // if(socket.id && socketList[socket.id]){
-                    // delete socketList[socket.id];
-                    // }
                 });
                 if (socket && socket.readyState === ws_1.default.OPEN) {
                     console.log("Sender");
@@ -124,8 +139,11 @@ ws.on("connection", (socket) => {
             }
         }
         catch (error) {
-            console.log("caught savedb error");
             console.log(error);
+            if (error === "Token refresh failed") {
+                socket.close();
+                return;
+            }
         }
     }));
     socket.on("close", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -134,5 +152,5 @@ ws.on("connection", (socket) => {
             delete socketList[socket.id];
         }
     }));
-});
+}));
 server.listen(8080);

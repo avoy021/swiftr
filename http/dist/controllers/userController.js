@@ -62,7 +62,7 @@ export const loginController = (req, res) => __awaiter(void 0, void 0, void 0, f
         });
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
-            maxAge: 1 * 60 * 1000 // => 1m
+            maxAge: 3 * 60 * 1000 // => 1m
         });
         res.status(200).json({ username: email, accessToken, userId: id });
     }
@@ -72,7 +72,7 @@ export const loginController = (req, res) => __awaiter(void 0, void 0, void 0, f
 });
 export const generateAccessToken = (payload) => {
     const secret = process.env.ACCESS_TOKEN_SECRET;
-    return jwt.sign(payload, secret, { expiresIn: "1m" });
+    return jwt.sign(payload, secret, { expiresIn: "3m" });
 };
 export const generateRefreshToken = (payload) => {
     const secret = process.env.REFRESH_TOKEN_SECRET;
@@ -90,7 +90,7 @@ export const refreshTokenController = (req, res) => {
             const accessToken = generateAccessToken({ email, id });
             res.cookie("accessToken", accessToken, {
                 httpOnly: true,
-                maxAge: 1 * 60 * 1000 //in ms => 1min
+                maxAge: 3 * 60 * 1000 //in ms => 1min
             });
             res.status(201).json({ message: "Token created", username: email, accessToken, userId: id });
             return;
@@ -106,7 +106,10 @@ export const logoutController = (req, res) => __awaiter(void 0, void 0, void 0, 
         const jwt = req.cookies.jwt;
         if (jwt) {
             res.clearCookie("jwt", { httpOnly: true });
-            res.clearCookie("accessToken", { httpOnly: true });
+            const accessToken = req.cookies.accessToken;
+            if (accessToken) {
+                res.clearCookie("accessToken", { httpOnly: true });
+            }
             res.status(200).json({ message: "Logout successful" });
             return;
         }

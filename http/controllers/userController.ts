@@ -55,7 +55,7 @@ export const loginController = async (req: Request,res: Response):Promise<void> 
         })
         res.cookie("accessToken",accessToken,{
             httpOnly: true,
-            maxAge: 1*60*1000 // => 1m
+            maxAge: 3*60*1000 // => 1m
         })
         res.status(200).json({username:email,accessToken,userId:id});
     } catch (error) {
@@ -65,7 +65,7 @@ export const loginController = async (req: Request,res: Response):Promise<void> 
 
 export const generateAccessToken = (payload:object):string => {
     const secret = process.env.ACCESS_TOKEN_SECRET as string;
-    return jwt.sign(payload,secret,{expiresIn:"1m"});
+    return jwt.sign(payload,secret,{expiresIn:"3m"});
 }
 export const generateRefreshToken = (payload:object):string => {
     const secret = process.env.REFRESH_TOKEN_SECRET as string;
@@ -84,7 +84,7 @@ export const refreshTokenController = (req:Request,res:Response) => {
             const accessToken = generateAccessToken({email,id});
             res.cookie("accessToken",accessToken,{
                 httpOnly: true,
-                maxAge: 1*60*1000 //in ms => 1min
+                maxAge: 3*60*1000 //in ms => 1min
             })
             res.status(201).json({message:"Token created",username:email,accessToken,userId:id});
             return;
@@ -100,7 +100,10 @@ export const logoutController = async(req:Request,res:Response):Promise<void> =>
         const jwt = req.cookies.jwt;
         if(jwt) {
             res.clearCookie("jwt",{httpOnly:true});
-            res.clearCookie("accessToken",{httpOnly:true});
+            const accessToken = req.cookies.accessToken;
+            if(accessToken) {
+                res.clearCookie("accessToken",{httpOnly:true});
+            }
             res.status(200).json({message:"Logout successful"});
             return;
         }
