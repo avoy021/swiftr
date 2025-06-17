@@ -102,6 +102,8 @@ ws.on("connection", (socket) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             if (!socket.id || !socket.accessToken || !socket.expiresIn || !socket.lastChecked)
                 return; //destroy socket
+            // add socket.expiresIn and .lastCheck functionality
+            // to skip this step everytime or 30s keep the decoded.exp of new token in socket.expiryIn
             const data = JSON.parse(payload.toString());
             if (data.type === "token-refreshed") {
                 console.log("Emit: ", data);
@@ -111,7 +113,7 @@ ws.on("connection", (socket) => __awaiter(void 0, void 0, void 0, function* () {
             if (socket.refreshInProgress) {
                 yield (0, auth_1.waitForRefreshToComplete)(socket);
             }
-            if (!socket.refreshInProgress && (0, auth_1.getExpiryInMinutes)(socket.accessToken) < 2) {
+            if (!socket.refreshInProgress && (0, auth_1.getExpiryInMinutes)(socket.expiresIn) < 2) {
                 socket.refreshInProgress = true;
                 socket.send(JSON.stringify({
                     type: "refresh-token"

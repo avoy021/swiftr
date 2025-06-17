@@ -12,14 +12,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.waitForRefreshToComplete = exports.refreshToken = exports.getExpiryInMinutes = void 0;
+exports.waitForRefreshToComplete = exports.refreshToken = exports.getExpiryInMinutes = exports.decodeExpiryOfJWT = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const getExpiryInMinutes = (accessToken) => {
+const decodeExpiryOfJWT = (accessToken) => {
+    try {
+        const decoded = jsonwebtoken_1.default.decode(accessToken);
+        return decoded.exp;
+    }
+    catch (error) {
+        return 0; // if token is invalid, implies expired
+    }
+};
+exports.decodeExpiryOfJWT = decodeExpiryOfJWT;
+const getExpiryInMinutes = (expiresIn) => {
     try {
         // to skip this step everytime or 30s keep the decoded.exp of new token in socket.expiryIn
-        const decoded = jsonwebtoken_1.default.decode(accessToken);
+        // const decoded = jwt.decode(accessToken) as any;
+        // const d = Socket.expiresIn;
         const now = Math.floor(Date.now() / 1000); // ms/1000 => converted to sec
-        const expiry = decoded.exp - now;
+        const expiry = expiresIn - now;
         return Math.floor(expiry / 60);
     }
     catch (error) {
@@ -36,6 +47,7 @@ const refreshToken = (socket) => __awaiter(void 0, void 0, void 0, function* () 
         }, 5000); // 5s
         socket.once("refreshedToken", token => {
             clearTimeout(timeout);
+            socket.expiresIn = (0, exports.decodeExpiryOfJWT)(token);
             resolve(token);
         });
     });

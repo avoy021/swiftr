@@ -1,12 +1,22 @@
 import jwt from "jsonwebtoken";
 import { CustomWebsocket } from "./types";
 
-export const getExpiryInMinutes = (accessToken:string):number => {
+export const decodeExpiryOfJWT = (accessToken:string):number => {
+    try {
+        const decoded = jwt.decode(accessToken) as any;
+        return decoded.exp;
+    } catch (error) {
+        return 0; // if token is invalid, implies expired
+    }
+}
+
+export const getExpiryInMinutes = (expiresIn:number):number => {
     try {
         // to skip this step everytime or 30s keep the decoded.exp of new token in socket.expiryIn
-        const decoded = jwt.decode(accessToken) as any;
+        // const decoded = jwt.decode(accessToken) as any;
+        // const d = Socket.expiresIn;
         const now = Math.floor(Date.now()/1000); // ms/1000 => converted to sec
-        const expiry = decoded.exp - now;
+        const expiry = expiresIn - now;
         return Math.floor(expiry/60);
     } catch (error) {
         return 0; // if token is invalid, implies expired
@@ -23,6 +33,7 @@ export const refreshToken = async(socket:CustomWebsocket): Promise<string> => {
 
         socket.once("refreshedToken", token => {
             clearTimeout(timeout);
+            socket.expiresIn = decodeExpiryOfJWT(token);
             resolve(token);
         })
     })
