@@ -1,6 +1,9 @@
+"use client";
 import Link from "next/link";
 import { Menu,Send } from "lucide-react";
 import { BgBlackBtn } from "@/components";
+import Lottie from "lottie-react";
+import Plane from "@/assets/blue-plane.json"
 
 const In = () => {
     return (
@@ -10,7 +13,9 @@ const In = () => {
                 <Link href="#" className="flex lg:hidden justify-center items-center">
                     <Send className="w-8 h-8"/>        
                 </Link>
-                <Link href="/" className="hidden lg:block text-[clamp(3rem,24rem,18vw)] font-bold leading-none tracking-tight">Swiftr</Link>
+                {/* style={{ width: 300, height: 300 }} */}
+                <Link href="/" className="hidden lg:block text-[clamp(3rem,24rem,18vw)] font-bold leading-none tracking-tight z-10">Swiftr</Link>
+                <Lottie animationData={Plane} loop={true} className="fixed left-[20%] top-[2%]"/>
                 <div className="hidden lg:flex h-fit justify-end items-center space-x-10 text-lg mt-[15]">
                     <Link href="#" className="">
                         <button className="link-underline">Solutions</button>
@@ -31,7 +36,7 @@ const In = () => {
             </header>
             <section className="flex flex-col lg:flex-row justify-between lg:items-end w-[92%] mx-auto pb-[clamp(1rem,3vw,18vw)]">
                 <h1 className="lg:hidden text-[45px] font-bold tracking-tight pb-3 leading-none">Messaging reimagined</h1>      
-                <h2 className="text-xl font-semibold tracking-tight pb-8 lg:pb-0">Instant messaging, finally done right!</h2>
+                <h2 className="text-2xl font-semibold tracking-tight pb-8 lg:pb-0">Instant messaging, finally done right!</h2>
                 <div className="space-x-4 flex justify-start pb-6 lg:pb-0">
                     <Link href="#" className="">
                         <BgBlackBtn text="All Solutions"/>
