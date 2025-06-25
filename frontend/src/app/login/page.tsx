@@ -59,27 +59,27 @@ const Login = () => {
                     <input
                         type="email"
                         placeholder="Email"
-                        className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100"
+                        className="w-full px-4 py-2.5 text-xs md:text-sm border border-gray-300 rounded-lg md:rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <input
                         type="password"
                         placeholder="Password"
-                        className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100"
+                        className="w-full px-4 py-2.5 text-xs md:text-sm border border-gray-300 rounded-lg md:rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <button
                         onClick={loginHandler}
-                        className="w-full py-2 bg-gray-800 text-white rounded-md font-semibold hover:bg-gray-700 transition"
+                        className="w-full py-2 bg-gray-800 text-white text-sm md:text-base rounded-3xl md:rounded-md font-semibold hover:bg-gray-700 transition"
                     >
-                        Log In
+                        Login
                     </button>
                 </div>
 
                 {/* 🔹 Sign-up Prompt */}
-                <p className="text-md text-center text-gray-600 mt-6">
+                <p className="text-base md:text-md text-center text-gray-600 mt-6">
                     Don’t have an account?{" "}
                     <Link href="/signup" className="text-blue-500 hover:underline">
                         Sign up
