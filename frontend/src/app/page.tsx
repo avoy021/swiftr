@@ -16,7 +16,7 @@ const In = () => {
                 </Link>
                 {/* style={{ width: 300, height: 300 }} */}
                 <Link href="/" className="hidden lg:block text-[clamp(3rem,24rem,18vw)] font-[800] leading-none tracking-tight z-10 -mt-10">Swiftr</Link>
-                <Lottie animationData={Plane} loop={true} className="fixed left-[19%] top-[5%]"/>
+                {/* <Lottie animationData={Plane} loop={true} className="fixed left-[19%] top-[5%]"/> */}
                 <div className="hidden lg:flex flex-col gap-y-20">
                     <div className="flex justify-start items-center space-x-10 text-xl mt-[15]">
                         <Link href="#" className="">
@@ -34,19 +34,19 @@ const In = () => {
                     </div>
                     <h1 className="hidden lg:block text-6xl font-[600] tracking-tight leading-none"><span className="block">Lorem, ipsum.</span><span className="block">Chats</span></h1>
                 </div>
-                <Link href="#" className="flex justify-center items-center w-12 h-12 rounded-full bg-black hover:bg-gray-900">
-                    <button className="hover:cursor-pointer flex items-center text-gray-500"><Menu className="w-4 h-4"/></button>
+                <Link href="#" className="flex justify-center items-center w-12 h-12 rounded-full bg-black hover:bg-gray-900 hover:cursor-pointer">
+                    <button className="flex items-center text-gray-500"><Menu className="w-4 h-4"/></button>
                 </Link>
             </header>
             <section className="flex flex-col lg:flex-row justify-between lg:items-end w-[92%] mx-auto pb-[clamp(1rem,3vw,18vw)]">
                 <h1 className="lg:hidden text-[45px] font-bold tracking-tight pb-3 leading-none">Messaging reimagined</h1>      
                 <h2 className="text-2xl font-[600] tracking-tight pb-8 lg:pb-0">Instant messaging, finally done right!</h2>
                 <div className="space-x-4 flex justify-start pb-6 lg:pb-0">
-                    <Link href="#" className="">
-                        <BgBlackBtn text="All Solutions"/>
+                    <Link href="/signup" className="">
+                        <BgBlackBtn text="Create Account"/>
                     </Link>
-                    <Link href="#" className="">
-                        <BgBlackBtn text="Ownership"/>
+                    <Link href="/temp" className="">
+                        <BgBlackBtn text="Login"/>
                     </Link>
                 </div>
             </section>

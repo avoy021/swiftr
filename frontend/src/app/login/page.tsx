@@ -31,43 +31,42 @@ const Login = () => {
         }
     },[accessToken])
     return (
-        <main className="px-26 pt-6 flex justify-between h-screen bg-gray-50">
-            <div className="w-2/5 flex flex-col justify-center items-center w-1/2 h-full">
-                <div className="pb-6"><Origami className="h-12 w-12"/></div>
-                <div className="flex flex-col justify-center items-center gap-y-2 w-1/2">
-                    <p className="text-2xl font-medium pb-6">Log in to Swift</p>
-                    {/* <p>Create a free account</p> */}
-                    <div className="w-full border-solid border-2 rounded-sm border-gray-700 mt-2 text-center my-auto">
-                        <Link href="/signup" className="inline-block w-full h-full py-2">
-                            <FaGoogle className="h-4 w-4 mr-1 inline-block"/>
-                            Log in with Google
-                        </Link>
-                    </div>
-                    <p className="text-center my-2">or</p>
-                </div>
-                <div className="flex flex-col gap-y-4 w-1/2">
-                    <div className="">
-                        {/* <label htmlFor="email">Email address</label> */}
-                        <input type="text" name="email" id="email" className="block w-full px-2 py-2 mt-2 border-solid border-1 text-sm rounded-sm" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
-                    </div>
-                    <div className="">
-                        {/* <label htmlFor="password">Password</label> */}
-                        <input type="password" name="password" id="password" className="block w-full px-2 py-2 mt-2 border-solid border-1 text-sm rounded-sm" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
-                    </div>
-                    <div className="">
-                        <button className="w-full cursor-pointer border-solid border-2 rounded-sm border-gray-700 px-10 py-2 mt-3 text-center text-sm font-medium bg-black text-gray-100" onClick={loginHandler}>{loading? <Spinner size='h-5 w-5' fullScreen={false}/> : "Log In"}</button>
-                    </div>
-                </div>
-                <div className="flex gap-x-1 pt-4">
-                    <p>Don't have an account?</p>
-                    <Link href="/signup" className="underline text-blue-500">Sign up</Link>
-                </div>
-            </div>
-            <div className="w-3/5 mx-auto">
-                <img src="/landing-page-1.png" alt="" className="w-full object-contain"/>
-            </div> 
+        <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#789fc2] to-white font-lato">
+      <div className="bg-gray-50 p-8 rounded-xl shadow-md w-full max-w-md">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Login to Swiftr</h1>
 
-            {toast && <Toast message={toast} onClose={clearToast}/>}
+        <div className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button
+            onClick={loginHandler}
+            className="w-full py-2 bg-gray-800 text-white rounded-md font-semibold hover:bg-gray-700 transition"
+          >
+            Log In
+          </button>
+        </div>
+
+        <p className="text-sm text-center text-gray-600 mt-6">
+          Don’t have an account?{" "}
+          <Link href="/signup" className="text-blue-500 hover:underline">
+            Sign up
+          </Link>
+        </p>
+      </div>
         </main>
     )
 }
