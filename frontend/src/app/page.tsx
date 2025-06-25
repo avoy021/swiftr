@@ -16,7 +16,7 @@ const In = () => {
                 </Link>
                 {/* style={{ width: 300, height: 300 }} */}
                 <Link href="/" className="hidden lg:block text-[clamp(3rem,24rem,18vw)] font-[800] leading-none tracking-tight z-10 -mt-10">Swiftr</Link>
-                {/* <Lottie animationData={Plane} loop={true} className="fixed left-[19%] top-[5%]"/> */}
+                <Lottie animationData={Plane} loop={true} className="fixed left-[19%] top-[5%]"/>
                 <div className="hidden lg:flex flex-col gap-y-20">
                     <div className="flex justify-start items-center space-x-10 text-xl mt-[15]">
                         <Link href="#" className="">
@@ -45,7 +45,7 @@ const In = () => {
                     <Link href="/signup" className="">
                         <BgBlackBtn text="Create Account"/>
                     </Link>
-                    <Link href="/temp" className="">
+                    <Link href="/login" className="">
                         <BgBlackBtn text="Login"/>
                     </Link>
                 </div>
