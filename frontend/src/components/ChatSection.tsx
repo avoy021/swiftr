@@ -109,10 +109,6 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
     },[activeChat])
 
     useEffect(() => {
-        console.log("token changed")
-    },[accessToken])
-
-    useEffect(() => {
         if(activeChat && chats.length>0){
             messageEndRef.current?.scrollIntoView({'behavior': 'instant'});
         }
@@ -138,7 +134,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
     }
 
     return (
-        <main className="sticky top-0 flex-1 h-full flex flex-col px-12 py-6 bg-gray-100">
+        <main className="hidden md:block sticky top-0 flex-1 h-full flex flex-col px-12 py-6 bg-gray-100">
             <div className="w-3/4 mx-auto mb-4">
                 <p className="text-2xl font-medium">{contactInfoByEmail[activeChat]?.receiverName}</p>
             </div>

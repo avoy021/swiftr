@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
 import { useEffect } from "react";
 import { fetchContacts,fetchChats } from "@/lib/features/user/userSlice";
-import Spinner from "@/components/Spinner";
+import Spinner from "@/Components/Spinner";
 
 const DashboardLayout = ({children}:Readonly<{children:React.ReactNode}>) => {
     const {isInitialized,accessToken,username,contacts} = useSelector((state:RootState) => state.user);

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
 import { useEffect } from "react";
 import { initializeState } from "@/lib/features/user/userSlice";
-import Spinner from "@/components/Spinner";
+import Spinner from "@/Components/Spinner";
 
 
 const geistSans = Geist({

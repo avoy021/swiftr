@@ -5,6 +5,7 @@ import NewContact from "./NewContact";
 import Spinner from "./Spinner";
 import Toast from "./Toast";
 import BgBlackBtn from "./BgBlackBtn";
+import ChatSidebar from "./ChatSidebar";
 
 export {
     ContactCard,
@@ -13,5 +14,6 @@ export {
     NewContact,
     Spinner,
     Toast,
-    BgBlackBtn
+    BgBlackBtn,
+    ChatSidebar
 }

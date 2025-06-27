@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, setUser } from "@/lib/features/user/userSlice";
 import { AppDispatch, RootState } from "@/lib/store";
-import { Spinner, Toast } from "@/components";
+import { Spinner, Toast } from "@/Components";
 import { useToast } from "@/hooks/useToast";
 
 const Login = () => {
