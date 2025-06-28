@@ -72,7 +72,9 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
         socketRef.current.onmessage = async(event) => {
             const payload = JSON.parse(event.data);
             const {type} = payload;
-            console.log(payload);
+            if(payload.type){
+                console.log(payload);
+            }
             if(type === "text-message") {
                 if(payload.senderEmail !== username && payload.senderEmail !== activeChat) {
                     showToast(`${payload.senderEmail} sent you a message.`)
@@ -134,7 +136,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
     }
 
     return (
-        <main className="hidden md:block sticky top-0 flex-1 h-full flex flex-col px-12 py-6 bg-gray-100">
+        <main className="hidden md:block sticky top-0 flex flex-1 flex-col px-12 py-6 bg-gray-100">
             <div className="w-3/4 mx-auto mb-4">
                 <p className="text-2xl font-medium">{contactInfoByEmail[activeChat]?.receiverName}</p>
             </div>

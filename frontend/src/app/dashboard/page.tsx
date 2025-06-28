@@ -27,9 +27,9 @@ const Dashboard = () => {
     },[contacts])
 
     return (
-        <main className="flex h-screen w-screen box-border overflow-x-hidden font-inter">
+        <main className="flex min-h-screen bg-gray-100 font-inter">
             <ChatSidebar/>
-            <ContactCard items={activeTab==="messages"?contacts:contacts} activeChat={activeChat} setActiveChat={setActiveChat}/>
+            <ContactCard activeChat={activeChat} setActiveChat={setActiveChat}/>
             <ChatSection activeChat={activeChat}/>
             <NewContact isOpen={open} setIsOpen={setIsOpen}/>
         </main>

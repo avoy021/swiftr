@@ -22,7 +22,7 @@ const Login = () => {
     }
 
     useEffect(() => {
-        if(accessToken) {
+        if(accessToken) {   
             // showToast("Welcome back")
             setEmail("");
             setPassword("");
@@ -74,7 +74,7 @@ const Login = () => {
                         onClick={loginHandler}
                         className="w-full py-2 bg-gray-800 text-white text-sm md:text-base rounded-3xl md:rounded-md font-semibold hover:bg-gray-700 transition"
                     >
-                        Login
+                        {loading? <Spinner size='h-5 w-5' fullScreen={false}/> : "Log In"}
                     </button>
                 </div>
 
