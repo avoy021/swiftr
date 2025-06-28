@@ -12,7 +12,7 @@ const ChatSidebar = () => {
     <nav className="
       fixed border-t border-gray-200
       w-full bottom-0 flex justify-between items-center py-3
-      md:top-0 md:left-0 md:bottom-0 md:w-[clamp(7rem,9vw,10rem)] md:h-full md:flex-col md:justify-between md:item-center md:mx-auto md:py-6 md:border-t-0 md:border-r
+      md:top-0 md:left-0 md:bottom-0 md:w-[clamp(7rem,9vw,10rem)] md:h-full md:flex-col md:justify-between md:py-6 md:border-t-0 md:border-r
       shadow-md z-50 text-black
     ">
       {/* Logo */}
@@ -21,7 +21,7 @@ const ChatSidebar = () => {
       </Link>
 
       {/* Navbar for screen<md */}
-      <div className="flex w-full px-4 md:flex-col md:gap-y-6 justify-between items-center">
+      <div className="flex w-full px-6 md:flex-col md:gap-y-6 md:px-0 justify-between items-center">
 
         {/* Messages */}
         <Link href="/messages" className="flex flex-col items-center md:flex-row md:gap-x-2 hover:text-blue-500 mb-0 md:mb-6  md:mx-auto">

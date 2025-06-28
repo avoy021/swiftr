@@ -136,7 +136,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
     }
 
     return (
-        <main className="hidden md:block sticky top-0 flex flex-1 flex-col px-12 py-6 bg-gray-100">
+        <main className="hidden md:block sticky top-0 flex flex-1 flex-col px-12 py-6">
             <div className="w-3/4 mx-auto mb-4">
                 <p className="text-2xl font-medium">{contactInfoByEmail[activeChat]?.receiverName}</p>
             </div>
