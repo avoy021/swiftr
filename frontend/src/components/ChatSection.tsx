@@ -33,7 +33,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
         }
 
         socketRef.current.onerror = (err) => {
-            console.error(err);
+            // console.error(err);
         }
 
         socketRef.current.onclose = (event) => {
