@@ -27,12 +27,12 @@ const Dashboard = () => {
     },[contacts])
 
     return (
-        <main className="flex min-h-screen bg-[#f9f7f7] font-inter">
-            {/* bg hex code- bg-gray-100,#e8eaed,#f7f9fc,#f9f9f9 */}
+        <main className="flex min-h-screen font-inter bg-[#f9fafc]">
+            {/* bg hex code- bg-gray-100,#e8eaed,#f7f9fc,#f9f9f9, f9f7f7 */}
             <ChatSidebar/>
             <ContactCard activeChat={activeChat} setActiveChat={setActiveChat}/>
             <ChatSection activeChat={activeChat}/>
-            <NewContact isOpen={open} setIsOpen={setIsOpen}/>
+            {/* <NewContact isOpen={open} setIsOpen={setIsOpen}/> */}
         </main>
     )
 }

@@ -32,7 +32,7 @@ const In = () => {
                             <button className="hover:cursor-pointer flex items-center text-gray-500"><Menu className="w-4 h-4"/></button>
                         </Link> */}
                     </div>
-                    <h1 className="hidden lg:block text-6xl font-[600] tracking-tight leading-none"><span className="block">Lorem, ipsum.</span><span className="block">Chats</span></h1>
+                    <h1 className="hidden lg:block text-6xl font-[600] tracking-tight leading-none"><span className="block">Lorem, ipsum.</span><span className="block">Chat</span></h1>
                 </div>
                 <Link href="#" className="flex justify-center items-center w-12 h-12 rounded-full bg-black hover:bg-gray-900 hover:cursor-pointer">
                     <button className="flex items-center text-gray-500"><Menu className="w-4 h-4"/></button>
