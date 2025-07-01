@@ -8,9 +8,10 @@ import { AppDispatch } from "@/lib/store";
 
 interface ChatSidebarProps {
     activeChat: string;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ChatSidebar: React.FC<ChatSidebarProps> = ({activeChat}) => {
+const ChatSidebar: React.FC<ChatSidebarProps> = ({activeChat,setIsOpen}) => {
   const dispatch = useDispatch<AppDispatch>();
   return (
     <nav className={`md:flex ${activeChat?"hidden":"flex"}
@@ -33,31 +34,28 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({activeChat}) => {
         md:flex-col md:justify-center md:gap-y-10 md:px-0
       ">
         {/* Messages */}
-        <Link 
-          href="#" 
+        <button 
           className="flex flex-col items-center md:flex-row md:gap-x-2 hover:text-blue-500"
         >
           <FaEnvelope className="text-sm md:text-lg" />
           <span className="text-xs md:text-sm">Inbox</span>
-        </Link>
+        </button>
 
         {/* Add Friend */}
-        <Link 
-          href="#" 
+        <button onClick={() => setIsOpen(true)} 
           className="flex flex-col items-center md:flex-row md:gap-x-2 hover:text-blue-500"
         >
           <FaUserPlus className="text-sm md:text-lg" />
           <span className="text-xs md:text-sm">Add</span>
-        </Link>
+        </button>
 
         {/* Profile */}
-        <Link 
-          href="#" 
+        <button  
           className="flex flex-col items-center md:flex-row md:gap-x-2 md:-ml-0.5 hover:text-blue-500"
         >
           <FaUser className="text-sm md:text-base" />
           <span className="text-xs md:text-sm">Profile</span>
-        </Link>
+        </button>
 
         {/* Logout (only on small screens) */}
         <button
