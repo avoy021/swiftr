@@ -136,12 +136,12 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
     }
 
     return (
-        <main className="hidden md:block sticky top-0 flex flex-1 flex-col px-12 py-6">
-            <div className="w-3/4 mx-auto mb-4">
+        <main className={`${activeChat?"flex":"hidden"} max-h-screen overflow-hidden flex-1 flex-col px-4 md:px-12 py-6`}>
+            <div className="w-full md:w-3/4 mx-auto mb-4">
                 <p className="text-2xl font-medium">{contactInfoByEmail[activeChat]?.receiverName}</p>
             </div>
             <div className="flex-1 overflow-y-auto">
-                <div className="w-3/4 mx-auto flex flex-col">
+                <div className="flex flex-col w-full md:w-3/4 mx-auto pb-4">
                         {
                             activeChat && chats.length>0 ? chats.map((chat,index) => {
                             if(chat.senderId===userId && chat.receiverId===contactInfoByEmail[activeChat].receiverId) {
@@ -162,18 +162,18 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
 
                             }
                             }) : 
-                            null 
+                            <p className="text-center text-gray-400 mt-10 text-sm">No messages yet</p> 
                         }
                 </div>
                 <div ref={messageEndRef}/>
             </div>
-            <div className="w-3/4 mx-auto mt-2 mb-1 flex items-center bg-gray-200 rounded-lg">
-                <input type="text" name="messageBar" id="messageBar" placeholder="Your message" className="w-11/12 py-4 px-4 outline-none text-sm font-medium" ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => {
+            <div className="w-full md:w-3/4 mx-auto mb-2 flex items-center rounded-xl bg-gray-200 pl-3">
+                <input type="text" name="messageBar" id="messageBar" placeholder="Your message" className="flex-1 py-3 md:py-4 px-4 outline-none text-sm font-medium bg-gray-200" ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => {
                     if(e.key === "Enter") {
                         sendMessage();
                     }
                 }}/>
-                <Send className="cursor-pointer" onClick={sendMessage}/>
+                <Send className="cursor-pointer mr-3 text-gray-600 hover:text-blue-500 transition" onClick={sendMessage}/>
             </div>
             {toast && <Toast message={toast} onClose={clearToast}/>}
         </main>

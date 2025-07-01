@@ -51,7 +51,7 @@ const ChatSidebar = () => {
           href="#" 
           className="flex flex-col items-center md:flex-row md:gap-x-2 md:-ml-0.5 hover:text-blue-500"
         >
-          <FaUser className="text-sm md:text-lg" />
+          <FaUser className="text-sm md:text-base" />
           <span className="text-xs md:text-sm">Profile</span>
         </Link>
 

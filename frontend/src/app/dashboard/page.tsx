@@ -32,7 +32,7 @@ const Dashboard = () => {
             <ChatSidebar/>
             <ContactCard activeChat={activeChat} setActiveChat={setActiveChat}/>
             <ChatSection activeChat={activeChat}/>
-            {/* <NewContact isOpen={open} setIsOpen={setIsOpen}/> */}
+            <NewContact isOpen={open} setIsOpen={setIsOpen}/>
         </main>
     )
 }
