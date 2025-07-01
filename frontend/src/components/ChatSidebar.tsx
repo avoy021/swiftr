@@ -6,14 +6,18 @@ import { logoutUser } from "@/lib/features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 
-const ChatSidebar = () => {
+interface ChatSidebarProps {
+    activeChat: string;
+}
+
+const ChatSidebar: React.FC<ChatSidebarProps> = ({activeChat}) => {
   const dispatch = useDispatch<AppDispatch>();
   return (
-    <nav className="
+    <nav className={`md:flex ${activeChat?"hidden":"flex"}
       fixed bg-black text-gray-100 shadow-md z-50
       w-full bottom-0 flex justify-between items-center py-3
       md:top-0 md:left-0 md:bottom-0 md:w-[clamp(6rem,7.5vw,10rem)] md:h-full md:flex-col md:items-start md:pl-[clamp(0.25rem,1vw,50px)] md:py-6
-    ">
+    `}>
 
       {/* Logo (top) */}
       <Link 

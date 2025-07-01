@@ -16,7 +16,7 @@ const ContactCard: React.FC<ContactCardProps> = ({activeChat,setActiveChat}) => 
     const [search,setSearch] = useState("");
 
     return (
-        <main className="w-full py-8 px-4 md:px-1 md:ml-[150px] md:min-w-[250px] md:max-w-[350px] flex flex-col items-center">
+        <main className={`md:flex ${activeChat?"hidden":"flex"} w-full py-8 px-4 md:px-1 md:ml-[150px] md:min-w-[250px] md:max-w-[350px] flex flex-col items-center`}>
             {/* search bar */}
             <div className="relative w-full mb-4 px-4">
                 <input

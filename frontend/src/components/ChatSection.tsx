@@ -2,7 +2,7 @@
 import axiosInstance from "@/lib/axiosInterceptors";
 import { logoutUser, setChats, setToken } from "@/lib/features/user/userSlice";
 import { AppDispatch, RootState } from "@/lib/store";
-import { Send } from "lucide-react";
+import { Send,ArrowLeft } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Toast from "./Toast";
@@ -10,10 +10,11 @@ import { useToast } from "@/hooks/useToast";
 import axios from "axios";
 
 interface ChatSectionProps {
+    setActiveChat: React.Dispatch<React.SetStateAction<string>>;
     activeChat: string
 }
 
-const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
+const ChatSection: React.FC<ChatSectionProps> = ({activeChat,setActiveChat}) => {
     const [text,setText] = useState("");
     const [details,setDetails] = useState<{receiverName:string,receiverId:number,receiverEmail:string}>({receiverName:"", receiverId:0, receiverEmail:""});
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -136,8 +137,11 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat}) => {
     }
 
     return (
-        <main className={`${activeChat?"flex":"hidden"} max-h-screen overflow-hidden flex-1 flex-col px-4 md:px-12 py-6`}>
-            <div className="w-full md:w-3/4 mx-auto mb-4">
+        <main className={`${activeChat?"flex":"hidden"} max-h-screen overflow-hidden flex-1 flex-col px-6 md:px-12 py-6`}>
+            <div className="w-full flex md:w-3/4 mx-auto mb-2">
+                <button className="mr-3 md:hidden" onClick={() => setActiveChat("")}>
+                    <ArrowLeft/>
+                </button>
                 <p className="text-2xl font-medium">{contactInfoByEmail[activeChat]?.receiverName}</p>
             </div>
             <div className="flex-1 overflow-y-auto">
