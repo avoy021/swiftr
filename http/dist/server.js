@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import { chatRoute, userRoute } from "./routes/index.js";
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
