@@ -8,10 +8,11 @@ import { AppDispatch } from "@/lib/store";
 
 interface ChatSidebarProps {
     activeChat: string;
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setAddContact: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpenProfile: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ChatSidebar: React.FC<ChatSidebarProps> = ({activeChat,setIsOpen}) => {
+const ChatSidebar: React.FC<ChatSidebarProps> = ({activeChat,setAddContact,setOpenProfile}) => {
   const dispatch = useDispatch<AppDispatch>();
   return (
     <nav className={`md:flex ${activeChat?"hidden":"flex"}
@@ -42,7 +43,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({activeChat,setIsOpen}) => {
         </button>
 
         {/* Add Friend */}
-        <button onClick={() => setIsOpen(true)} 
+        <button onClick={() => setAddContact(true)} 
           className="flex flex-col items-center md:flex-row md:gap-x-2 hover:text-blue-500"
         >
           <FaUserPlus className="text-sm md:text-lg" />
@@ -50,7 +51,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({activeChat,setIsOpen}) => {
         </button>
 
         {/* Profile */}
-        <button  
+        <button onClick={() => setOpenProfile(true)}
           className="flex flex-col items-center md:flex-row md:gap-x-2 md:-ml-0.5 hover:text-blue-500"
         >
           <FaUser className="text-sm md:text-base" />

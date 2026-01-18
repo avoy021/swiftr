@@ -2,7 +2,7 @@
 import axiosInstance from "@/lib/axiosInterceptors";
 import { logoutUser, setChats, setToken } from "@/lib/features/user/userSlice";
 import { AppDispatch, RootState } from "@/lib/store";
-import { Send,ArrowLeft } from "lucide-react";
+import { Send, ArrowLeft, ChevronLeft } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Toast from "./Toast";
@@ -78,7 +78,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat,setActiveChat}) => 
             }
             if(type === "text-message") {
                 if(payload.senderEmail !== username && payload.senderEmail !== activeChat) {
-                    showToast(`${payload.senderEmail} sent you a message.`)
+                    showToast(`${payload.senderEmail} sent you a message.`);
                 }
                 dispatch(setChats(payload));            
             }

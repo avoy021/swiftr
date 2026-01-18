@@ -6,16 +6,16 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 interface ContactCardProps {
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    isOpen: boolean;
+    setAddContact: React.Dispatch<React.SetStateAction<boolean>>;
+    addContact: boolean;
 }
 
-const NewContact:React.FC<ContactCardProps> = ({isOpen,setIsOpen}) => {
+const NewContact:React.FC<ContactCardProps> = ({addContact,setAddContact}) => {
     const [name,setName] = useState("");
     const [email,setEmail] = useState("");
     const dispatch = useDispatch<AppDispatch>();
     const closeModal = () => {
-      setIsOpen(false);
+      setAddContact(false);
       setEmail("");
       setName("");
     }
@@ -40,7 +40,7 @@ const NewContact:React.FC<ContactCardProps> = ({isOpen,setIsOpen}) => {
 
     return (
       <>
-        {isOpen && (
+        {addContact && (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50" onClick={closeModal}>
               <div
                 className="bg-white p-6 rounded-xl shadow-xl w-[90%] max-w-[450px]"

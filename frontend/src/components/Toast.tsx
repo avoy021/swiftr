@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 
-const Toast = ({ message, onClose }: { message: string; onClose: () => void }) => {
+const Toast = ({ message, onClose }: { message: string, onClose: () => void }) => {
   useEffect(() => {
     const timer = setTimeout(onClose, 3000); // auto-close after 3 sec
     return () => clearTimeout(timer);
