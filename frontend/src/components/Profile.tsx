@@ -24,7 +24,7 @@ const Profile:React.FC<ProfileCardProps> = ({openProfile,setOpenProfile}) => {
                 openProfile && (
                         <main className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50" onClick={closeProfile}>
                             <div className="flex flex-col items-center justify-center bg-white rounded-xl shadow-xl w-[90%] max-w-[450px] pb-8" onClick={(e) => e.stopPropagation()}>
-                                <div className="bg-yellow-400 w-full h-16 rounded-t-xl">
+                                <div className="bg-yellow-400 w-full h-16">
                                     <img src="bg-chat.jpg" alt="" className="w-full h-full object-cover object-center"/>
                                 </div>
                                 <img src={`${pic}`} alt="Default profile pic" className="w-16 h-16 rounded-full -mt-8"/>

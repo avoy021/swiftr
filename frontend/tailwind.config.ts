@@ -1,3 +1,4 @@
+import { sub } from "framer-motion/client";
 import type { Config } from "tailwindcss";
 
 export default {
@@ -9,8 +10,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "#F6F3C2",
+        dark: "#242222",
+        primary: "#FF6D1F",
+        secondary: "#FFE08F",
+        tertiary: "#BF1A1A",
+        light: "#FFF8DE"
       },
       fontSize: {
         '10xl': '10rem',
@@ -24,6 +29,7 @@ export default {
         inter: ['var(--font-inter)', 'sans-serif'],
         lato: ['var(--font-lato)', 'sans-serif'],
         robotoCondensed: ['var(--font-roboto-condensed)', 'sans-serif'],
+        lobster2: ['var(--font-lobster-two)', 'sans-serif']
       },
       backgroundImage: {
         'custom-gradient': 'linear-gradient(0deg, rgb(255, 255, 255), rgba(255, 255, 255, 0) 95%)',

@@ -43,12 +43,12 @@ const Signup = () => {
           <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition">
             <FaGoogle className="text-xl text-red-500" />
           </button>
-          <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition">
+          {/* <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition">
             <FaGithub className="text-xl text-gray-800" />
           </button>
           <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition">
             <FaFacebookF className="text-xl text-blue-600" />
-          </button>
+          </button> */}
         </div>
 
         {/* 🔹 Divider */}

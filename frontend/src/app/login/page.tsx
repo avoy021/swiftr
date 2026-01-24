@@ -30,7 +30,10 @@ const Login = () => {
         }
     },[accessToken])
     return (
-        <main className="min-h-screen flex items-center justify-center bg-gray-50 md:bg-gradient-to-b from-[#789fc2] to-white font-lato">
+        <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 md:bg-gradient-to-b from-[#789fc2] to-white font-lato">
+            {/* <Link href="/" className="absolute top-12 left-1/2 -translate-x-1/2 text-3xl md:text-4xl font-bold font-lobster2">
+                Swiftr
+            </Link> */}
             <div className="w-[90%] max-w-[400px] md:bg-gray-50 md:shadow-md p-8 rounded-xl">
                 <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Login to Swiftr</h1>
 
@@ -39,12 +42,12 @@ const Login = () => {
                     <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition">
                         <FaGoogle className="text-xl text-red-500" />
                     </button>
-                    <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition">
+                    {/* <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition">
                         <FaGithub className="text-xl text-gray-800" />
                     </button>
                     <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition">
                         <FaFacebookF className="text-xl text-blue-600" />
-                    </button>
+                    </button> */}
                 </div>
 
                 {/* 🔹 Divider */}
@@ -74,7 +77,7 @@ const Login = () => {
                         onClick={loginHandler}
                         className="w-full py-2 bg-gray-800 text-white text-sm md:text-base rounded-3xl md:rounded-md font-semibold hover:bg-gray-700 transition"
                     >
-                        {loading? <Spinner size='h-5 w-5' fullScreen={false}/> : "Log In"}
+                        {loading? <Spinner size='h-6 w-6' fullScreen={false}/> : <span className="">Log In</span> }
                     </button>
                 </div>
 

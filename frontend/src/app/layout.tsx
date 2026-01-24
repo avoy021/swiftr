@@ -1,6 +1,6 @@
 "use client";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Lato, Roboto_Condensed, Barlow } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Lato, Roboto_Condensed, Barlow, Lobster_Two } from "next/font/google";
 import "./globals.css";
 import Providers from "@/lib/Providers";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,6 +36,12 @@ const robotoCondensed = Roboto_Condensed({
   subsets: ['latin'],
 })
 
+const lobster2 = Lobster_Two({
+  variable: "--font-lobster-two",
+  subsets: ['latin'],
+  weight: ['400','700']
+})
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -44,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${lato.variable} ${robotoCondensed.variable}`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${lato.variable} ${robotoCondensed.variable} ${lobster2.variable}`}
       >
         <Providers>
           <AuthProvider>

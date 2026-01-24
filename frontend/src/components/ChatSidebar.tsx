@@ -22,12 +22,11 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({activeChat,setAddContact,setOp
     `}>
 
       {/* Logo (top) */}
-      <Link 
-        href="#" 
-        className="hidden md:block md:mb-6 flex flex-col items-center hover:text-blue-500"
+      <div 
+        className="hidden md:w-full md:block md:mb-6 text-center hover:cursor-pointer"
       >
-        <span className="text-sm md:text-lg">swiftr</span>
-      </Link>
+        <span className="font-lobster2 text-3xl">Swiftr</span>
+      </div>
 
       {/* Links (center vertically on md screens) */}
       <div className="
