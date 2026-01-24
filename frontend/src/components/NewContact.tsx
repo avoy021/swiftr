@@ -56,8 +56,7 @@ const NewContact: React.FC<ContactCardProps> = ({
             <h2 className="text-base text-dark md:text-lg font-bold mb-4">
               Save Contact
             </h2>
-            <div className="flex items-center gap-4 w-full px-4 border-2 border-gray-200 rounded-lg md:rounded-md focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-400 transition mb-4 bg-gray-50">
-              {/* icon */}
+            <div className="flex items-center gap-4 w-full px-4 border-2 border-gray-200 rounded-lg md:rounded-lg focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-400 transition mb-4 bg-gray-50">
               <Mail size={22} strokeWidth={1.6} className="h-full"/>
               <input
                 type="email"
@@ -67,7 +66,7 @@ const NewContact: React.FC<ContactCardProps> = ({
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="flex items-center gap-4 w-full px-4 border-2 border-gray-200 rounded-lg md:rounded-md focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-400 transition mb-4 bg-gray-50">
+            <div className="flex items-center gap-4 w-full px-4 border-2 border-gray-200 rounded-lg md:rounded-lg focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-400 transition mb-4 bg-gray-50">
               <User size={22} strokeWidth={1.6} className="h-full"/>
               <input
                 type="text"

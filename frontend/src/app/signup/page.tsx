@@ -4,7 +4,7 @@ import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Spinner } from "@/Components";
+import  Spinner  from "@/Components/Spinner";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 

@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { Menu,Send } from "lucide-react";
-import { BgBlackBtn } from "@/Components";
 import Lottie from "lottie-react";
 import Plane from "@/assets/plane.json"
 import Indicators from "@/assets/indicators.json"

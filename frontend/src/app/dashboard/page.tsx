@@ -1,11 +1,15 @@
 "use client";
 import { MessageSquare,Contact,User,LogOut,Origami,UserPlus } from "lucide-react";
 import Link from "next/link";
-import { ContactCard,ChatSection,NewContact,ChatSidebar, Profile } from "@/Components"; 
 import { useEffect, useRef, useState } from "react";
 import { logoutUser, setContactsInfo } from "@/lib/features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
+import NewContact from "@/Components/NewContact"
+import ChatSidebar from "@/Components/ChatSidebar";
+import ContactCard from "@/Components/ContactCard";
+import ChatSection from "@/Components/ChatSection";
+import Profile from "@/Components/Profile";
 
 const Dashboard = () => {
     const {contacts,contactInfoByEmail} = useSelector((state:RootState) => state.user);
@@ -33,7 +37,6 @@ const Dashboard = () => {
             <ChatSection activeChat={activeChat} setActiveChat={setActiveChat}/>
             <NewContact addContact={addContact} setAddContact={setAddContact}/>
             <Profile openProfile={openProfile} setOpenProfile={setOpenProfile}/>
-            {/* <h1>hii</h1> */}
         </main>
     )
 }
