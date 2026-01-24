@@ -144,7 +144,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({activeChat,setActiveChat}) => 
                 </button>
                 <p className="text-2xl font-medium">{contactInfoByEmail[activeChat]?.receiverName}</p>
             </div>
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto no-scrollbar">
                 <div className="flex flex-col w-full md:w-3/4 mx-auto pb-4">
                         {
                             activeChat && chats.length>0 ? chats.map((chat,index) => {

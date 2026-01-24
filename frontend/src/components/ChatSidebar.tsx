@@ -23,7 +23,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({activeChat,setAddContact,setOp
 
       {/* Logo (top) */}
       <div 
-        className="hidden md:w-full md:block md:mb-6 text-center hover:cursor-pointer"
+        className="hidden md:w-full md:block md:mb-6 hover:cursor-pointer"
       >
         <span className="font-lobster2 text-3xl">Swiftr</span>
       </div>

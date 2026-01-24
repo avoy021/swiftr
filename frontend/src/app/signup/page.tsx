@@ -83,7 +83,7 @@ const Signup = () => {
                         onClick={signupHandler}
                         className="w-full py-2 bg-dark text-white text-sm md:text-base rounded-3xl md:rounded-md font-semibold hover:bg-gray-700 transition"
                     >
-                        {loading? <Spinner size='h-6 w-6' fullScreen={false}/> : <span className="">Signup</span> }
+                        {loading? <Spinner size='h-6 w-6' fullScreen={false}/> : <span className="">Sign up</span> }
                     </button>
                 </div>
 
