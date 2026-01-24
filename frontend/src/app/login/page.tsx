@@ -30,12 +30,12 @@ const Login = () => {
         }
     },[accessToken])
     return (
-        <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 md:bg-gradient-to-b from-[#789fc2] to-white font-lato">
+        <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#FFE3BB] to-white font-lato">
             {/* <Link href="/" className="absolute top-12 left-1/2 -translate-x-1/2 text-3xl md:text-4xl font-bold font-lobster2">
                 Swiftr
             </Link> */}
-            <div className="w-[90%] max-w-[400px] md:bg-gray-50 md:shadow-md p-8 rounded-xl">
-                <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Login to Swiftr</h1>
+            <div className="w-[90%] max-w-[400px] md:bg-gray-50 md:shadow-lg p-8 rounded-xl">
+                <h1 className="text-2xl font-bold text-dark mb-6 text-center">Login to Swiftr</h1>
 
                 {/* 🔹 Social Icons */}
                 <div className="flex justify-center items-center gap-6 mb-6">
@@ -75,7 +75,7 @@ const Login = () => {
                     />
                     <button
                         onClick={loginHandler}
-                        className="w-full py-2 bg-gray-800 text-white text-sm md:text-base rounded-3xl md:rounded-md font-semibold hover:bg-gray-700 transition"
+                        className="w-full py-2 bg-dark text-white text-sm md:text-base rounded-3xl md:rounded-md font-semibold hover:bg-gray-700 transition"
                     >
                         {loading? <Spinner size='h-6 w-6' fullScreen={false}/> : <span className="">Log In</span> }
                     </button>
@@ -84,7 +84,7 @@ const Login = () => {
                 {/* 🔹 Sign-up Prompt */}
                 <p className="text-base md:text-md text-center text-gray-600 mt-6">
                     Don’t have an account?{" "}
-                    <Link href="/signup" className="text-blue-500 hover:underline">
+                    <Link href="/signup" className="text-primary hover:underline">
                         Sign up
                     </Link>
                 </p>

@@ -15,7 +15,8 @@ export default {
         primary: "#FF6D1F",
         secondary: "#FFE08F",
         tertiary: "#BF1A1A",
-        light: "#FFF8DE"
+        light: "#FFF8DE",
+        test: "#FF714B"
       },
       fontSize: {
         '10xl': '10rem',
