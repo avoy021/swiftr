@@ -23,7 +23,6 @@ model User {
   receivedMessages Message[] @relation("ReceivedMessages")
 }
 
-
 model Message {
   id Int @id @default(autoincrement())
   text String
@@ -32,6 +31,8 @@ model Message {
   sender User @relation(name: "SentMessages",fields: [senderId],references: [id])
   receiver User @relation(name: "ReceivedMessages",fields: [receiverId],references: [id])
   createdAt DateTime @default(now())
+
+  @@index([text])
 }
 
 model Contact {
